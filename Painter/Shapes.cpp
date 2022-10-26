@@ -177,6 +177,43 @@ BOOL CBasePoint::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags)
 }
 
 ////////////////////////////////////////
+// Реализация методов класса CThreeCircle
+
+CThreeCircle::CThreeCircle(int x, int y, WORD s) : CBasePoint(x, y, s)
+{
+	m_wSize = s;
+}
+
+CThreeCircle::CThreeCircle() : CBasePoint()
+{
+	m_wSize = 40;
+}
+
+IMPLEMENT_SERIAL(CThreeCircle, CObject, 1)
+void CThreeCircle::Serialize(CArchive& ar)
+{
+	CBasePoint::Serialize(ar);
+}
+void CThreeCircle::Show(CDC* pDC)
+{
+	int s = m_wSize / 2;
+	// Устанавливаем перео и кисть
+	PrepareDC(pDC);
+	// Рисуем квадрат
+	pDC->Ellipse(x, y, x + s / 2, y + s / 2);
+	pDC->Ellipse(x + s / 2, y, x + s, y + s / 2);
+	pDC->Ellipse(x + s / 4.0, y + sqrt(3)/4 * s, x + 3/4.0 * s, y + s * (2 + sqrt(3)) / 4);
+	// Восстанавливаем контекст
+	RestoreDC(pDC);
+}
+
+void CThreeCircle::GetRegion(CRgn& Rgn)
+{
+	int s = m_wSize / 2;
+	Rgn.CreateRectRgn(x - s, y - s, x + s, y + s);
+}
+
+////////////////////////////////////////
 // Реализация методов класса CSquare
 
 CSquare::CSquare(int x, int y, WORD s): CBasePoint(x, y, s)

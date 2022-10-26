@@ -48,6 +48,26 @@ public:
 };
 
 ////////////////////////////////////////////////////
+//класс три круга
+class CThreeCircle : public CBasePoint
+{
+	DECLARE_SERIAL(CThreeCircle)
+protected:
+	// Метод сериализации
+	void Serialize(CArchive& ar);
+public:
+	// Конструкторы
+	CThreeCircle(int x, int y, WORD s);
+	CThreeCircle();
+	~CThreeCircle() {};
+	//Методы
+		// Отображает фигуру на экране
+	void Show(CDC* pDC);
+	// Сообщает область захвата
+	void GetRegion(CRgn& Rgn);
+};
+
+////////////////////////////////////////////////////
 //класс квадрат
 class CSquare: public CBasePoint
 {

@@ -370,12 +370,20 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		pShape->SetBrush(RGB(200,200,200));
 	break;
 	case OP_CIRCLE:
-		// Создаем объект - круг
+	/*	// Создаем объект - круг
 		pShape=new CBasePoint(first_point.x, first_point.y, size);
 		// Черная линия шириной 2 мм
 		pShape->SetPen(RGB(0,0,0), 200, PS_GEOMETRIC);
 		// Темно-серая заливка
 		pShape->SetBrush(RGB(100,100,100));
+	break;*/
+	case OP_THREECIRCLE:
+		// Создаем объект - трикруга
+		pShape = new CThreeCircle(first_point.x, first_point.y, size * 2);
+		// Красная линия шириной 1 мм
+		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		// Темно-серая диагональная штриховка
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 	break;
 	case OP_SQUARE:
 		// Создаем объект - квадрат
