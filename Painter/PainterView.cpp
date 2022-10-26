@@ -377,9 +377,9 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Темно-серая заливка
 		pShape->SetBrush(RGB(100,100,100));
 	break;*/
-	case OP_THREECIRCLE:
+	case OP_THREECIRCLES:
 		// Создаем объект - трикруга
-		pShape = new CThreeCircle(first_point.x, first_point.y, size * 2);
+		pShape = new CThreeCircles(first_point.x, first_point.y, size * 2);
 		// Красная линия шириной 1 мм
 		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка

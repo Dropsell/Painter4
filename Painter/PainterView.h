@@ -16,7 +16,7 @@
 #define OP_CIRCLE		3
 #define OP_SQUARE		4
 #define OP_SURFACE		5
-#define OP_THREECIRCLE	6
+#define OP_THREECIRCLES	6
 
 #define OP_SELECT		10
 

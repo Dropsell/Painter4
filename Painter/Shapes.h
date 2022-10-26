@@ -49,17 +49,17 @@ public:
 
 ////////////////////////////////////////////////////
 //класс три круга
-class CThreeCircle : public CBasePoint
+class CThreeCircles : public CBasePoint
 {
-	DECLARE_SERIAL(CThreeCircle)
+	DECLARE_SERIAL(CThreeCircles)
 protected:
 	// Метод сериализации
 	void Serialize(CArchive& ar);
 public:
 	// Конструкторы
-	CThreeCircle(int x, int y, WORD s);
-	CThreeCircle();
-	~CThreeCircle() {};
+	CThreeCircles(int x, int y, WORD s);
+	CThreeCircles();
+	~CThreeCircles() {};
 	//Методы
 		// Отображает фигуру на экране
 	void Show(CDC* pDC);
