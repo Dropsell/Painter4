@@ -10,14 +10,17 @@
 #endif // _MSC_VER > 1000
 
 // Определение операций
-#define OP_NOOPER	0
-#define OP_LINE		1
-#define OP_POINT	2
-#define OP_CIRCLE	3
-#define OP_SQUARE	4
-#define OP_SURFACE	5
+#define OP_NOOPER		0
+#define OP_LINE			1
+#define OP_POINT		2
+#define OP_CIRCLE		3
+#define OP_SQUARE		4
+#define OP_SURFACE		5
 
-#define OP_SELECT	10
+
+
+#define OP_SELECT		10
+#define OP_FIVECIRCLES	11
 
 class CBasePoint;
 class CPainterView : public CScrollView
@@ -31,10 +34,11 @@ public:
 	// Текущая операция
 	int m_CurOper;
 	// Курсоры различных операций
-	HCURSOR m_hcurCircle;	// рисуем круг
-	HCURSOR m_hcurSquare;	// рисуем квадрат
-	HCURSOR m_hcurPolygon;	// рисуем полилинию или полигон
-	HCURSOR m_hcurSurface;	// рисуем поверхность
+	HCURSOR m_hcurCircle;		// рисуем круг
+	HCURSOR m_hcurFiveCircles;	// рисуем пять кругов
+	HCURSOR m_hcurSquare;		// рисуем квадрат
+	HCURSOR m_hcurPolygon;		// рисуем полилинию или полигон
+	HCURSOR m_hcurSurface;		// рисуем поверхность
 	// Курсор "по умолчанию"
 	HCURSOR m_hcurDefault;	// используем в операции выбора
 

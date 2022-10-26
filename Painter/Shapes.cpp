@@ -177,6 +177,47 @@ BOOL CBasePoint::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags)
 }
 
 ////////////////////////////////////////
+// Реализация методов класса CFiveCircles
+
+CFiveCircles::CFiveCircles(int x, int y, WORD s) : CBasePoint(x, y, s)
+{
+	m_wSize = s;
+}
+
+CFiveCircles::CFiveCircles() : CBasePoint()
+{
+	m_wSize = 40;
+}
+
+IMPLEMENT_SERIAL(CFiveCircles, CObject, 1)
+void CFiveCircles::Serialize(CArchive& ar)
+{
+	CBasePoint::Serialize(ar);
+}
+void CFiveCircles::Show(CDC* pDC)
+{
+	int s = m_wSize / 2;
+	// Устанавливаем перео и кисть
+	PrepareDC(pDC);
+	// Рисуем квадрат
+	pDC->Ellipse(x, y + sqrt(3) / 6 * s, x + s / 3, y + s * (2 + sqrt(3)) / 6);
+	pDC->Ellipse(x + s / 3, y + sqrt(3) / 6 * s, x + 2.0/3 * s , y + s * (2 + sqrt(3)) / 6);
+	pDC->Ellipse(x + 2.0 / 3 * s, y + sqrt(3) / 6 * s, x + s, y + s * (2 + sqrt(3)) / 6);
+	pDC->Ellipse(x + s / 6, y, x + s * 3.0 / 6, y + s / 3);
+	pDC->Ellipse(x + s * 3.0 / 6, y, x + s * 5.0 / 6, y + s / 3);
+
+	//pDC->Ellipse(x + s / 4.0, y + sqrt(3) / 4 * s, x + 3 / 4.0 * s, y + s * (2 + sqrt(3)) / 4);
+	// Восстанавливаем контекст
+	RestoreDC(pDC);
+}
+
+void CFiveCircles::GetRegion(CRgn& Rgn)
+{
+	int s = m_wSize / 2;
+	Rgn.CreateRectRgn(x - s, y - s, x + s, y + s);
+}
+
+////////////////////////////////////////
 // Реализация методов класса CSquare
 
 CSquare::CSquare(int x, int y, WORD s): CBasePoint(x, y, s)

@@ -49,6 +49,26 @@ public:
 
 ////////////////////////////////////////////////////
 //класс квадрат
+class CFiveCircles : public CBasePoint
+{
+	DECLARE_SERIAL(CFiveCircles)
+protected:
+	// Метод сериализации
+	void Serialize(CArchive& ar);
+public:
+	// Конструкторы
+	CFiveCircles(int x, int y, WORD s);
+	CFiveCircles();
+	~CFiveCircles() {};
+	//Методы
+		// Отображает фигуру на экране
+	void Show(CDC* pDC);
+	// Сообщает область захвата
+	void GetRegion(CRgn& Rgn);
+};
+
+////////////////////////////////////////////////////
+//класс квадрат
 class CSquare: public CBasePoint
 {
  	DECLARE_SERIAL(CSquare)   
