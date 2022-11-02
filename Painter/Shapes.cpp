@@ -312,6 +312,99 @@ void CPolygon::Transform(const CPoint &point0, double ang, int a, int b)
 		m_PointsArray[i]=::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
 };
 
+////////////////////////////////////////
+// Реализация методов класса CTriangles
+
+CTriangles::CTriangles() : CPolygon()
+{
+	m_wSize = 0;
+	m_bPolygon = FALSE;
+}
+
+CTriangles::CTriangles(CPoint point, WORD s) : CPolygon()
+{
+	m_wSize = s/2;
+	m_bPolygon = FALSE;
+	startPoint = point;
+}
+
+CTriangles::~CTriangles()
+{
+	m_PointsArray.RemoveAll();
+}
+
+
+IMPLEMENT_SERIAL(CTriangles, CObject, 1)
+void CTriangles::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring()) // сохранение
+	{
+		// Сохраняем параметры объекта
+		ar << m_bPolygon;
+	}
+	else	// чтение
+	{
+		// Получили версию формата
+		int Version = ar.GetObjectSchema();
+		// В зависимости от версии
+		// можно выполнить различные варианты загрузки
+		// Загружаем параметры объекта
+		ar >> m_bPolygon;
+	}
+	m_PointsArray.Serialize(ar);
+	CBasePoint::Serialize(ar);
+}
+void CTriangles::Show(CDC* pDC)
+{
+	/*CPoint	vectorOne = CPoint(-m_wSize, -sqrt(3) * m_wSize);
+	CPoint	vectorTwo = CPoint(2 * m_wSize, 0);
+	CPoint	vectorThree = CPoint(-2 * m_wSize, 2 * sqrt(3) * m_wSize);
+	CArray <CPoint, CPoint> vectorArray;
+	vectorArray.Add(vectorOne);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorThree);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorOne);
+
+	CPoint point = startPoint;
+	m_PointsArray.Add(point);
+	for (int i = 0; i < vectorArray.GetCount(); i++) 
+	{
+		point.x = point.x + vectorArray[i].x;
+		point.y = point.y + vectorArray[i].y;
+		m_PointsArray.Add(point);
+	}*/
+
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+
+	//m_bPolygon = TRUE;
+	// Устанавливаем перео и кисть
+	PrepareDC(pDC);
+	// Рисуем 
+	if (m_bPolygon)
+		pDC->Polygon(m_PointsArray.GetData(), m_PointsArray.GetSize());
+	else
+		pDC->Polyline(m_PointsArray.GetData(), m_PointsArray.GetSize());
+	// Восстанавливаем контекст
+	RestoreDC(pDC);
+}
+
+void CTriangles::GetRegion(CRgn& Rgn)
+{
+	Rgn.CreatePolygonRgn(m_PointsArray.GetData(), m_PointsArray.GetSize(), ALTERNATE);
+}
+
+void CTriangles::Transform(const CPoint& point0, double ang, int a, int b)
+{
+	for (int i = 0; i < m_PointsArray.GetSize(); i++)
+		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
+};
+
 /////////////////////////////////////////////////
 //3D Polygon
 

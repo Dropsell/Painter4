@@ -118,6 +118,38 @@ class CPolygon: public CBasePoint
 };
 
 ////////////////////////////////////////////////////
+//класс полигон
+class CTriangles : public CPolygon
+{
+	DECLARE_SERIAL(CTriangles)
+		BOOL	m_bPolygon;	// режим рисования: 
+	// TRUE - заполненный полигон,
+	// FALSE - ломаная кривая. Нет, ломаная прямая. Нет, ломаная линия. Во! 
+	CPoint startPoint;
+protected:
+	// Метод сериализации
+	void Serialize(CArchive& ar);
+public:
+	// Динамический массив точек-вершин
+	CArray <CPoint, CPoint> m_PointsArray;
+
+	// Конструкторы
+	CTriangles();
+	CTriangles(CPoint point, WORD s);
+	~CTriangles();
+	//Методы
+		// Отображает фигуру на экране
+	void Show(CDC* pDC);
+	
+	// Сообщает область захвата
+	void GetRegion(CRgn& Rgn);
+	// Устанавливает режим рисования полигона
+	void SetPolygon(BOOL p) { m_bPolygon = p; };
+	// Выполняет преобразование на плоскости
+	void Transform(const CPoint& point0, double ang, int a, int b);
+};
+
+////////////////////////////////////////////////////
 // 3D точка
 struct POINT3D
 {

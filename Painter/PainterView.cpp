@@ -387,12 +387,37 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 	break;
 	case OP_FIVECIRCLES:
 	case OP_CIRCLE:
+		/*
 		// Создаем объект - круг
 		pShape = new CFiveCircles(first_point.x, first_point.y, size * 2);
 		// Черная линия шириной 2 мм
 		pShape->SetPen(RGB(0, 0, 0), 200, PS_GEOMETRIC);
 		// Темно-серая заливка
-		pShape->SetBrush(RGB(100, 100, 100));
+		pShape->SetBrush(RGB(100, 100, 100));*/
+		m_CurOper = OP_LINE;
+		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
+
+		pShape = new CTriangles(CPoint(first_point.x, first_point.y), size);
+		// Темно-зеленая заливка
+		pShape->SetBrush(RGB(0, 100, 0));
+		// Черная линия шириной 0.5 мм
+		pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+
+		// Так как pShape указатель на CBasePoint,
+		// а метод SetPolygon() имеется только у класса CPolygon,
+		// требуется преобразование типа указателя
+		((CPolygon*)pShape)->SetPolygon(TRUE);
+		
+		//CPainterDoc* pDoc = GetDocument();
+		// Добавляем в конец списка
+		pDoc->m_ShapesList.AddTail(pShape);
+		// Последняя фигура становится активной
+		pDoc->m_pSelShape = pShape;
+		// Указываем, что документ изменен
+		pDoc->SetModifiedFlag();
+		m_CurOper = OP_CIRCLE;
+		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurCircle);
+
 	break;
 	case OP_SURFACE:
 		// Создаем объект - поверхность
