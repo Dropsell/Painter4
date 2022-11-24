@@ -417,25 +417,8 @@ CBeizer::CBeizer() : CPolygon()
 	m_bPolygon = FALSE;
 }
 
-//CBeizer::CBeizer(CArray <CPoint, CPoint> PointsArray) : CPolygon()
-//CBeizer::CBeizer(CBasePoint *cPol) : CPolygon()
 CBeizer::CBeizer(CPoint point, WORD s) : CPolygon()
 {
-	/*CBasePoint* cPolygon = cPol;
-	m_PointsArray.SetSize(cPolygon.m_PointsArray.GetSize());
-	for (int i = 0; i < cPolygon.m_PointsArray.GetSize(); i++)
-		m_PointsArray[i] = *cPolygon.m_PointsArray[i];*/
-	/*
-	m_wSize = 0;
-	m_bPolygon = FALSE;
-	m_PointsArray.SetSize(PointsArray.GetSize());
-	for (int i = 0; i < PointsArray.GetSize(); i++)
-		m_PointsArray[i] = PointsArray[i];
-		
-	for (int i = 2; i < m_PointsArray.GetSize() - 1; i += 3)
-		m_PointsArray.InsertAt(i + 1, GetMiddle(&m_PointsArray[i], &m_PointsArray[i + 1]));
-	*/
-
 	m_wSize = s / 2;
 	m_bPolygon = FALSE;
 	startPoint = point;
@@ -485,12 +468,13 @@ void CBeizer::Serialize(CArchive& ar)
 void CBeizer::Show(CDC* pDC)
 {
 	int nCount = m_SplinePointsArray.GetSize();
-
+	// Устанавливаем перео и кисть
+	PrepareDC(pDC);
 	pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
 	// Покажем точки стыковки сегментов
-	for (int i = 3; i < nCount; i += 3)
-		pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
-			m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
+	//for (int i = 3; i < nCount; i += 3)
+		//pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
+			//m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
 	// Восстанавливаем контекст
 	RestoreDC(pDC);
 }

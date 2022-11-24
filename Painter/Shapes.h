@@ -168,8 +168,6 @@ public:
 
 	// Конструкторы
 	CBeizer();
-	//CBeizer(CBasePoint *cPolygon);
-	//CBeizer(CArray <CPoint, CPoint> PointsArray);
 	CBeizer(CPoint point, WORD s);
 	~CBeizer();
 	//Методы

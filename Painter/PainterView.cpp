@@ -349,7 +349,6 @@ BOOL CPainterView::OnEraseBkgnd(CDC* pDC)
 	return Res;
 }
 
-static CArray <CPoint, CPoint> m_PointsArrayPV;
 
 void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point) 
 {
@@ -404,10 +403,6 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Черная линия шириной 0.5 мм
 		pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
 
-		//m_PointsArray = pShape->m_PointsArray.GetSize();
-		/*m_PointsArrayPV.SetSize(pShape->m_PointsArray.GetSize());
-		for (int i = 0; i < pShape->m_PointsArray.GetSize(); i++)
-			m_PointsArrayPV[i] = pShape->m_PointsArray[i];*/
 		// Так как pShape указатель на CBasePoint,
 		// а метод SetPolygon() имеется только у класса CPolygon,
 		// требуется преобразование типа указателя
@@ -441,7 +436,6 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Указываем, что документ изменен
 		pDoc->SetModifiedFlag();
 		
-		//CBasePoint *predPshape = pShape;
 		// Создаем объект - квадрат
 		pShape = new CBeizer(first_point, size);
 		// Красная линия шириной 1 мм
