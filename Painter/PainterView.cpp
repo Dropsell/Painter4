@@ -424,11 +424,12 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		pShape=AddSurface(first_point, size);
 	break;
 	case OP_SQUARE:
+		//Рисуем базовую линию
 		pShape = new CTriangles(first_point, size);
 		// Темно-зеленая заливка
 		pShape->SetBrush(RGB(0, 100, 0));
-		// Черная линия шириной 0.5 мм
-		pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+		// Черная линия шириной 0.25 мм
+		pShape->SetPen(RGB(0, 0, 0), 25, PS_GEOMETRIC);
 
 		pDoc->m_ShapesList.AddTail(pShape);
 		// Последняя фигура становится активной
@@ -436,10 +437,23 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Указываем, что документ изменен
 		pDoc->SetModifiedFlag();
 		
-		// Создаем объект - квадрат
-		pShape = new CBeizer(first_point, size);
-		// Красная линия шириной 1 мм
-		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		// Рисуем сплайновую кривую Безье
+		pShape = new CBeizer(first_point, size, false);
+		// Красная линия шириной 0.5 мм
+		pShape->SetPen(RGB(200, 0, 0), 50, PS_GEOMETRIC);
+		// Темно-серая диагональная штриховка
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+
+		pDoc->m_ShapesList.AddTail(pShape);
+		// Последняя фигура становится активной
+		pDoc->m_pSelShape = pShape;
+		// Указываем, что документ изменен
+		pDoc->SetModifiedFlag();
+
+		// Рисуем сплайновую кривую Безье
+		pShape = new CBeizer(first_point, size, true);
+		// Зёлёные точки шириной 1 мм
+		pShape->SetPen(RGB(0, 200, 0), 100, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 		break;

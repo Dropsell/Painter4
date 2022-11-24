@@ -155,6 +155,7 @@ class CBeizer : public CPolygon
 {
 	DECLARE_SERIAL(CBeizer)
 		BOOL	m_bPolygon;	// режим рисования: 
+		BOOL m_onlyPoints;
 	// TRUE - заполненный полигон,
 	// FALSE - ломаная кривая. Нет, ломаная прямая. Нет, ломаная линия. Во! 
 	CPoint startPoint;
@@ -168,7 +169,7 @@ public:
 
 	// Конструкторы
 	CBeizer();
-	CBeizer(CPoint point, WORD s);
+	CBeizer(CPoint point, WORD s, bool isOnlyPonts);
 	~CBeizer();
 	//Методы
 		// Отображает фигуру на экране

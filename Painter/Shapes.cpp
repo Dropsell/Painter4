@@ -417,12 +417,12 @@ CBeizer::CBeizer() : CPolygon()
 	m_bPolygon = FALSE;
 }
 
-CBeizer::CBeizer(CPoint point, WORD s) : CPolygon()
+CBeizer::CBeizer(CPoint point, WORD s, bool isOnlyPonts) : CPolygon()
 {
 	m_wSize = s / 2;
 	m_bPolygon = FALSE;
 	startPoint = point;
-
+	m_onlyPoints = isOnlyPonts;
 
 	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
 	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
@@ -470,11 +470,14 @@ void CBeizer::Show(CDC* pDC)
 	int nCount = m_SplinePointsArray.GetSize();
 	// Устанавливаем перео и кисть
 	PrepareDC(pDC);
-	pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
-	// Покажем точки стыковки сегментов
-	//for (int i = 3; i < nCount; i += 3)
-		//pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
-			//m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
+	if (!m_onlyPoints) 
+		pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
+	else {
+		//Покажем точки стыковки сегментов
+		for (int i = 3; i < nCount; i += 3)
+			pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
+				m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
+	}
 	// Восстанавливаем контекст
 	RestoreDC(pDC);
 }
