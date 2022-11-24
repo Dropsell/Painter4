@@ -349,6 +349,7 @@ BOOL CPainterView::OnEraseBkgnd(CDC* pDC)
 	return Res;
 }
 
+static CArray <CPoint, CPoint> m_PointsArrayPV;
 
 void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point) 
 {
@@ -377,14 +378,14 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Темно-серая заливка
 		pShape->SetBrush(RGB(100,100,100));
 	break;*/
-	case OP_SQUARE:
+	/*case OP_SQUARE:
 		// Создаем объект - квадрат
 		pShape=new CSquare(first_point.x, first_point.y, size*2);
 		// Красная линия шириной 1 мм
 		pShape->SetPen(RGB(200,0,0), 100, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
-	break;
+	break;*/
 	case OP_FIVECIRCLES:
 	case OP_CIRCLE:
 		/*
@@ -397,12 +398,16 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		m_CurOper = OP_LINE;
 		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
 
-		pShape = new CTriangles(CPoint(first_point.x, first_point.y), size);
+		pShape = new CTriangles(first_point, size);
 		// Темно-зеленая заливка
 		pShape->SetBrush(RGB(0, 100, 0));
 		// Черная линия шириной 0.5 мм
 		pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
 
+		//m_PointsArray = pShape->m_PointsArray.GetSize();
+		/*m_PointsArrayPV.SetSize(pShape->m_PointsArray.GetSize());
+		for (int i = 0; i < pShape->m_PointsArray.GetSize(); i++)
+			m_PointsArrayPV[i] = pShape->m_PointsArray[i];*/
 		// Так как pShape указатель на CBasePoint,
 		// а метод SetPolygon() имеется только у класса CPolygon,
 		// требуется преобразование типа указателя
@@ -410,11 +415,11 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		
 		//CPainterDoc* pDoc = GetDocument();
 		// Добавляем в конец списка
-		pDoc->m_ShapesList.AddTail(pShape);
+		//pDoc->m_ShapesList.AddTail(pShape);
 		// Последняя фигура становится активной
-		pDoc->m_pSelShape = pShape;
+		//pDoc->m_pSelShape = pShape;
 		// Указываем, что документ изменен
-		pDoc->SetModifiedFlag();
+		//pDoc->SetModifiedFlag();
 		m_CurOper = OP_CIRCLE;
 		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurCircle);
 
@@ -423,6 +428,27 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Создаем объект - поверхность
 		pShape=AddSurface(first_point, size);
 	break;
+	case OP_SQUARE:
+		pShape = new CTriangles(first_point, size);
+		// Темно-зеленая заливка
+		pShape->SetBrush(RGB(0, 100, 0));
+		// Черная линия шириной 0.5 мм
+		pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+
+		pDoc->m_ShapesList.AddTail(pShape);
+		// Последняя фигура становится активной
+		pDoc->m_pSelShape = pShape;
+		// Указываем, что документ изменен
+		pDoc->SetModifiedFlag();
+		
+		//CBasePoint *predPshape = pShape;
+		// Создаем объект - квадрат
+		pShape = new CBeizer(first_point, size);
+		// Красная линия шириной 1 мм
+		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		// Темно-серая диагональная штриховка
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+		break;
 	}
 	if(pShape!=NULL) // создали фигуру
 	{

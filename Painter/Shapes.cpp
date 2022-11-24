@@ -326,6 +326,14 @@ CTriangles::CTriangles(CPoint point, WORD s) : CPolygon()
 	m_wSize = s/2;
 	m_bPolygon = FALSE;
 	startPoint = point;
+
+
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
 }
 
 CTriangles::~CTriangles()
@@ -375,12 +383,7 @@ void CTriangles::Show(CDC* pDC)
 		m_PointsArray.Add(point);
 	}*/
 
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	
 
 	//m_bPolygon = TRUE;
 	// Устанавливаем перео и кисть
@@ -404,6 +407,106 @@ void CTriangles::Transform(const CPoint& point0, double ang, int a, int b)
 	for (int i = 0; i < m_PointsArray.GetSize(); i++)
 		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
 };
+
+////////////////////////////////////////
+// Реализация методов класса CBeizer
+
+CBeizer::CBeizer() : CPolygon()
+{
+	m_wSize = 0;
+	m_bPolygon = FALSE;
+}
+
+//CBeizer::CBeizer(CArray <CPoint, CPoint> PointsArray) : CPolygon()
+//CBeizer::CBeizer(CBasePoint *cPol) : CPolygon()
+CBeizer::CBeizer(CPoint point, WORD s) : CPolygon()
+{
+	/*CBasePoint* cPolygon = cPol;
+	m_PointsArray.SetSize(cPolygon.m_PointsArray.GetSize());
+	for (int i = 0; i < cPolygon.m_PointsArray.GetSize(); i++)
+		m_PointsArray[i] = *cPolygon.m_PointsArray[i];*/
+	/*
+	m_wSize = 0;
+	m_bPolygon = FALSE;
+	m_PointsArray.SetSize(PointsArray.GetSize());
+	for (int i = 0; i < PointsArray.GetSize(); i++)
+		m_PointsArray[i] = PointsArray[i];
+		
+	for (int i = 2; i < m_PointsArray.GetSize() - 1; i += 3)
+		m_PointsArray.InsertAt(i + 1, GetMiddle(&m_PointsArray[i], &m_PointsArray[i + 1]));
+	*/
+
+	m_wSize = s / 2;
+	m_bPolygon = FALSE;
+	startPoint = point;
+
+
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+
+	m_SplinePointsArray.SetSize(m_PointsArray.GetSize());
+	for (int i = 0; i < m_PointsArray.GetSize(); i++)
+		m_SplinePointsArray[i] = m_PointsArray[i];
+
+	for (int i = 2; i < m_SplinePointsArray.GetSize() - 1; i += 3)
+		m_SplinePointsArray.InsertAt(i + 1, GetMiddle(&m_SplinePointsArray[i], &m_SplinePointsArray[i + 1]));
+}
+
+CBeizer::~CBeizer()
+{
+	m_PointsArray.RemoveAll();
+}
+
+
+IMPLEMENT_SERIAL(CBeizer, CObject, 1)
+void CBeizer::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring()) // сохранение
+	{
+		// Сохраняем параметры объекта
+		ar << m_bPolygon;
+	}
+	else	// чтение
+	{
+		// Получили версию формата
+		int Version = ar.GetObjectSchema();
+		// В зависимости от версии
+		// можно выполнить различные варианты загрузки
+		// Загружаем параметры объекта
+		ar >> m_bPolygon;
+	}
+	m_PointsArray.Serialize(ar);
+	CBasePoint::Serialize(ar);
+}
+void CBeizer::Show(CDC* pDC)
+{
+	int nCount = m_SplinePointsArray.GetSize();
+
+	pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
+	// Покажем точки стыковки сегментов
+	for (int i = 3; i < nCount; i += 3)
+		pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
+			m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
+	// Восстанавливаем контекст
+	RestoreDC(pDC);
+}
+
+void CBeizer::GetRegion(CRgn& Rgn)
+{
+	Rgn.CreatePolygonRgn(m_PointsArray.GetData(), m_PointsArray.GetSize(), ALTERNATE);
+}
+
+void CBeizer::Transform(const CPoint& point0, double ang, int a, int b)
+{
+	for (int i = 0; i < m_PointsArray.GetSize(); i++)
+		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
+};
+
+
 
 /////////////////////////////////////////////////
 //3D Polygon
@@ -808,3 +911,9 @@ double Dist(POINT3D *pP1, POINT3D* pP2)
 	if(pP1==NULL||pP2==NULL) return 0;
 	return sqrt(pow(pP1->x-pP2->x, 2)+pow(pP1->y-pP2->y, 2)+pow(pP1->z-pP2->z, 2));
 };
+
+//Глобальная функция. Возвращает средину отрезка
+CPoint GetMiddle(CPoint* pP1, CPoint* pP2)
+{
+	return CPoint(pP1->x + (pP2->x - pP1->x) / 2, pP1->y + (pP2->y - pP1->y) / 2);
+}

@@ -27,6 +27,7 @@ public:
 	int			m_iBrushStyle;		//стиль заливки
 	COLORREF	m_rgbBrushColor;	//цвет заливки
 	DWORD		m_dwPattern_ID;		//идентификатор шаблона заливки
+	CArray <CPoint, CPoint> m_PointsArray;
 public:		
 	// Конструкторы
 	CBasePoint();				//конструктор без параметров
@@ -149,6 +150,39 @@ public:
 	void Transform(const CPoint& point0, double ang, int a, int b);
 };
 
+//класс Бэизер
+class CBeizer : public CPolygon
+{
+	DECLARE_SERIAL(CBeizer)
+		BOOL	m_bPolygon;	// режим рисования: 
+	// TRUE - заполненный полигон,
+	// FALSE - ломаная кривая. Нет, ломаная прямая. Нет, ломаная линия. Во! 
+	CPoint startPoint;
+protected:
+	// Метод сериализации
+	void Serialize(CArchive& ar);
+public:
+	// Динамический массив точек-вершин
+	CArray <CPoint, CPoint> m_PointsArray;
+	CArray <CPoint, CPoint> m_SplinePointsArray;
+
+	// Конструкторы
+	CBeizer();
+	//CBeizer(CBasePoint *cPolygon);
+	//CBeizer(CArray <CPoint, CPoint> PointsArray);
+	CBeizer(CPoint point, WORD s);
+	~CBeizer();
+	//Методы
+		// Отображает фигуру на экране
+	void Show(CDC* pDC);
+
+	// Сообщает область захвата
+	void GetRegion(CRgn& Rgn);
+	// Устанавливает режим рисования полигона
+	void SetPolygon(BOOL p) { m_bPolygon = p; };
+	// Выполняет преобразование на плоскости
+	void Transform(const CPoint& point0, double ang, int a, int b);
+};
 ////////////////////////////////////////////////////
 // 3D точка
 struct POINT3D
@@ -250,3 +284,6 @@ void AddTriangleSection(C3DPolygon *p3DPolygon, POINT3D *pP1, POINT3D *pP2, POIN
 int CutCross(double level, POINT3D *pP1, POINT3D *pP2, double &x, double &y);
 // Рассчитывает расстояние между двумя точками
 double Dist(POINT3D *pP1, POINT3D* pP2);
+
+//Глобальная функция. Возвращает средину отрезка
+CPoint GetMiddle(CPoint* pP1, CPoint* pP2);
