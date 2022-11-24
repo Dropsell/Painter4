@@ -485,7 +485,8 @@ void CBeizer::Serialize(CArchive& ar)
 void CBeizer::Show(CDC* pDC)
 {
 	int nCount = m_SplinePointsArray.GetSize();
-
+	// Устанавливаем перео и кисть
+	PrepareDC(pDC);
 	pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
 	// Покажем точки стыковки сегментов
 	for (int i = 3; i < nCount; i += 3)
