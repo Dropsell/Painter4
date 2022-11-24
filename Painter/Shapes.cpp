@@ -328,12 +328,12 @@ CTriangles::CTriangles(CPoint point, WORD s) : CPolygon()
 	startPoint = point;
 
 
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	this->m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	this->m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
 }
 
 CTriangles::~CTriangles()
@@ -424,12 +424,12 @@ CBeizer::CBeizer(CPoint point, WORD s, bool isOnlyPonts) : CPolygon()
 	startPoint = point;
 	m_onlyPoints = isOnlyPonts;
 
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	this->m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	this->m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
+	this->m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
 
 	m_SplinePointsArray.SetSize(m_PointsArray.GetSize());
 	for (int i = 0; i < m_PointsArray.GetSize(); i++)
@@ -469,7 +469,22 @@ void CBeizer::Show(CDC* pDC)
 {
 	int nCount = m_SplinePointsArray.GetSize();
 	// Устанавливаем перео и кисть
+	//PrepareDC(pDC);
+	// Красная линия шириной 0.5 мм
+	this->SetPen(RGB(200, 0, 0), 50, PS_GEOMETRIC);
 	PrepareDC(pDC);
+	pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
+	
+
+	// Зёлёные точки шириной 1 мм
+	this->SetPen(RGB(0, 200, 0), 100, PS_GEOMETRIC);
+	//Покажем точки стыковки сегментов
+	PrepareDC(pDC);
+		for (int i = 3; i < nCount; i += 3)
+			pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
+				m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
+
+	/*PrepareDC(pDC);
 	if (!m_onlyPoints) 
 		pDC->PolyBezier(m_SplinePointsArray.GetData(), nCount / 3 * 3 + 1);
 	else {
@@ -477,7 +492,7 @@ void CBeizer::Show(CDC* pDC)
 		for (int i = 3; i < nCount; i += 3)
 			pDC->Ellipse(m_SplinePointsArray[i].x - 4, m_SplinePointsArray[i].y - 4,
 				m_SplinePointsArray[i].x + 4, m_SplinePointsArray[i].y + 4);
-	}
+	}*/
 	// Восстанавливаем контекст
 	RestoreDC(pDC);
 }

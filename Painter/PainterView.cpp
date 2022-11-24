@@ -451,11 +451,11 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		pDoc->SetModifiedFlag();
 
 		// Рисуем сплайновую кривую Безье
-		pShape = new CBeizer(first_point, size, true);
+		//pShape = new CBeizer(first_point, size, true);
 		// Зёлёные точки шириной 1 мм
-		pShape->SetPen(RGB(0, 200, 0), 100, PS_GEOMETRIC);
+		//pShape->SetPen(RGB(0, 200, 0), 100, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
-		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+		//pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 		break;
 	}
 	if(pShape!=NULL) // создали фигуру
