@@ -328,12 +328,24 @@ CTriangles::CTriangles(CPoint point, WORD s) : CPolygon()
 	startPoint = point;
 
 
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	CPoint	vectorOne = CPoint(-m_wSize, -sqrt(3) * m_wSize);
+	CPoint	vectorTwo = CPoint(2 * m_wSize, 0);
+	CPoint	vectorThree = CPoint(-2 * m_wSize, 2 * sqrt(3) * m_wSize);
+	CArray <CPoint, CPoint> vectorArray;
+	vectorArray.Add(vectorOne);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorThree);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorOne);
+
+	CPoint Ipoint = startPoint;
+	m_PointsArray.Add(point);
+	for (int i = 0; i < vectorArray.GetCount(); i++)
+	{
+		Ipoint.x = Ipoint.x + vectorArray[i].x;
+		Ipoint.y = Ipoint.y + vectorArray[i].y;
+		m_PointsArray.Add(Ipoint);
+	}
 }
 
 CTriangles::~CTriangles()
@@ -424,19 +436,36 @@ CBeizer::CBeizer(CPoint point, WORD s, bool isOnlyPonts) : CPolygon()
 	startPoint = point;
 	m_onlyPoints = isOnlyPonts;
 
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x + 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y - m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x - 1.0 * sqrt(3) * m_wSize, startPoint.y + m_wSize));
-	m_PointsArray.Add(CPoint(startPoint.x, startPoint.y));
+	CPoint	vectorOne = CPoint(-m_wSize, -sqrt(3) * m_wSize);
+	CPoint	vectorTwo = CPoint(2 * m_wSize, 0);
+	CPoint	vectorThree = CPoint(-2 * m_wSize, 2 * sqrt(3) * m_wSize);
+	CArray <CPoint, CPoint> vectorArray;
+	vectorArray.Add(vectorOne);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorThree);
+	vectorArray.Add(vectorTwo);
+	vectorArray.Add(vectorOne);
+
+	CPoint Ipoint = startPoint;
+	m_PointsArray.Add(point);
+	for (int i = 0; i < vectorArray.GetCount(); i++)
+	{
+		Ipoint.x = Ipoint.x + vectorArray[i].x;
+		Ipoint.y = Ipoint.y + vectorArray[i].y;
+		m_PointsArray.Add(Ipoint);
+	}
 
 	m_SplinePointsArray.SetSize(m_PointsArray.GetSize());
 	for (int i = 0; i < m_PointsArray.GetSize(); i++)
 		m_SplinePointsArray[i] = m_PointsArray[i];
 
+	/*
+	for (int i = 2; i < m_SplinePointsArray.GetSize() - 2; i += 3)
+		m_SplinePointsArray[i + 1] = GetMiddle(&m_SplinePointsArray[i], &m_SplinePointsArray[i + 2]);
+	*/
 	for (int i = 2; i < m_SplinePointsArray.GetSize() - 1; i += 3)
 		m_SplinePointsArray.InsertAt(i + 1, GetMiddle(&m_SplinePointsArray[i], &m_SplinePointsArray[i + 1]));
+	
 }
 
 CBeizer::~CBeizer()

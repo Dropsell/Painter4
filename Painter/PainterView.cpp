@@ -440,7 +440,7 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Рисуем сплайновую кривую Безье
 		pShape = new CBeizer(first_point, size, false);
 		// Красная линия шириной 0.5 мм
-		pShape->SetPen(RGB(200, 0, 0), 50, PS_GEOMETRIC);
+		pShape->SetPen(RGB(200, 0, 0), 40, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 
