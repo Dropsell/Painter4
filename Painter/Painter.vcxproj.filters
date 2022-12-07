@@ -149,4 +149,9 @@
       <Filter>Файлы ресурсов</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Patterns\Pattern8.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

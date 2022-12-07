@@ -85,6 +85,7 @@ IDB_PATTERN4            BITMAP  DISCARDABLE     "Patterns\\Pattern4.bmp"
 IDB_PATTERN5            BITMAP  DISCARDABLE     "Patterns\\Pattern5.bmp"
 IDB_PATTERN6            BITMAP  DISCARDABLE     "Patterns\\Pattern6.bmp"
 IDB_PATTERN7            BITMAP  DISCARDABLE     "Patterns\\Pattern7.bmp"
+IDB_PATTERN8            BITMAP  DISCARDABLE     "Patterns\\Pattern8.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -154,6 +155,7 @@ BEGIN
 
             MENUITEM "Poly&gon",                    ID_EDIT_ADDSHAPE_POLYGON
             MENUITEM "Sur&face",                    ID_EDIT_ADDSHAPE_SURFACE
+            
         END
         POPUP "Change &Order"
         BEGIN
