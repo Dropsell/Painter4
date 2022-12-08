@@ -16,11 +16,18 @@
 #define OP_CIRCLE		3
 #define OP_SQUARE		4
 #define OP_SURFACE		5
-
+#define OP_FIVECIRCLES	6
+#define OP_THREECIRCLES 7
+#define OP_THEBOW		8
+#define OP_HOURGLASS	9
 
 
 #define OP_SELECT		10
-#define OP_FIVECIRCLES	11
+
+#define OP_BEIZETHEBOW	11
+#define OP_BEIZEHOURGLASS	12
+#define OP_PICTURE		13
+
 
 class CBasePoint;
 class CPainterView : public CScrollView
@@ -86,6 +93,13 @@ protected:
 	afx_msg void OnEditAddshapePoint();
 	afx_msg void OnEditAddshapeCircle();
 	afx_msg void OnEditAddshapeSquare();
+	afx_msg void OnEditAddshapeFiveCircles();
+	afx_msg void OnEditAddshapeThreeCircles();
+	afx_msg void OnEditAddshapeTheBow();
+	afx_msg void OnEditAddshapeHourglass();
+	//Beize the bow
+	//Beize hourglass
+	afx_msg void OnEditAddshapePicture();
 	afx_msg void OnEditSelect();
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);

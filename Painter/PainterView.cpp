@@ -29,6 +29,9 @@ BEGIN_MESSAGE_MAP(CPainterView, CScrollView)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POINT, OnEditAddshapePoint)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_CIRCLE, OnEditAddshapeCircle)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_SQUARE, OnEditAddshapeSquare)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_FIVECIRCLES, OnEditAddshapeFiveCircles)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_HOURGLASS, OnEditAddshapeHourglass)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_PICTURE, OnEditAddshapePicture)
 	ON_COMMAND(ID_EDIT_SELECT, OnEditSelect)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
@@ -215,6 +218,11 @@ void CPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	case OP_CIRCLE:
 	case OP_SQUARE:
 	case OP_SURFACE:
+	case OP_FIVECIRCLES:
+	case OP_THREECIRCLES:
+	case OP_THEBOW:
+	case OP_HOURGLASS:
+	case OP_PICTURE:
 		AddShape(m_CurOper, m_FirstPoint, LogPoint);
 		// Указываем, что окно надо перерисовать
 		Invalidate();
@@ -260,6 +268,11 @@ void CPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		case OP_CIRCLE:
 		case OP_SQUARE:
 		case OP_SURFACE:
+		case OP_FIVECIRCLES:
+		case OP_THREECIRCLES:
+		case OP_THEBOW:
+		case OP_HOURGLASS:
+		case OP_PICTURE:
 			if(nFlags==MK_LBUTTON) DrawMoveLine(m_FirstPoint, m_CurMovePoint);
 			m_CurMovePoint=LogPoint;
 			if(nFlags==MK_LBUTTON) DrawMoveLine(m_FirstPoint, m_CurMovePoint);
@@ -369,31 +382,31 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Светло-серая заливка
 		pShape->SetBrush(RGB(200,200,200));
 	break;
-	/*case OP_CIRCLE:
+	case OP_CIRCLE:
 		// Создаем объект - круг
 		pShape=new CBasePoint(first_point.x, first_point.y, size);
 		// Черная линия шириной 2 мм
 		pShape->SetPen(RGB(0,0,0), 200, PS_GEOMETRIC);
 		// Темно-серая заливка
 		pShape->SetBrush(RGB(100,100,100));
-	break;*/
-	/*case OP_SQUARE:
+	break;
+	case OP_SQUARE:
 		// Создаем объект - квадрат
 		pShape=new CSquare(first_point.x, first_point.y, size*2);
 		// Красная линия шириной 1 мм
 		pShape->SetPen(RGB(200,0,0), 100, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
-	break;*/
+	break;
 	case OP_FIVECIRCLES:
-	case OP_CIRCLE:
-		/*
 		// Создаем объект - круг
 		pShape = new CFiveCircles(first_point.x, first_point.y, size * 2);
 		// Черная линия шириной 2 мм
 		pShape->SetPen(RGB(0, 0, 0), 200, PS_GEOMETRIC);
 		// Темно-серая заливка
-		pShape->SetBrush(RGB(100, 100, 100));*/
+		pShape->SetBrush(RGB(100, 100, 100));
+		break;
+	case OP_HOURGLASS:
 		m_CurOper = OP_LINE;
 		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
 
@@ -415,7 +428,7 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		//pDoc->m_pSelShape = pShape;
 		// Указываем, что документ изменен
 		//pDoc->SetModifiedFlag();
-		m_CurOper = OP_CIRCLE;
+		m_CurOper = OP_HOURGLASS;
 		::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurCircle);
 
 	break;
@@ -423,7 +436,7 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Создаем объект - поверхность
 		pShape=AddSurface(first_point, size);
 	break;
-	case OP_SQUARE:
+	case OP_BEIZEHOURGLASS:
 		//Рисуем базовую линию
 		pShape = new CTriangles(first_point, size);
 		// Темно-зеленая заливка
@@ -457,6 +470,14 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 		break;
+	case OP_PICTURE:
+		// Создаем объект - квадрат
+		pShape = new CSquare(first_point.x, first_point.y, size * 2);
+		// Красная линия шириной 1 мм
+		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		// Темно-серая диагональная штриховка
+		pShape->SetBrush(RGB(100, 100, 100), IDB_MINECRAFT, HS_DIAGCROSS);
+		break;
 	}
 	if(pShape!=NULL) // создали фигуру
 	{
@@ -484,6 +505,36 @@ void CPainterView::OnEditAddshapeCircle()
 void CPainterView::OnEditAddshapeSquare() 
 {
 	m_CurOper=OP_SQUARE;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSquare);
+}
+
+void CPainterView::OnEditAddshapeFiveCircles()
+{
+	m_CurOper = OP_FIVECIRCLES;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurCircle);
+}
+
+void CPainterView::OnEditAddshapeThreeCircles()
+{
+	m_CurOper = OP_THREECIRCLES;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurCircle);
+}
+
+void CPainterView::OnEditAddshapeTheBow()
+{
+	m_CurOper = OP_THEBOW;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSquare);
+}
+
+void CPainterView::OnEditAddshapeHourglass()
+{
+	m_CurOper = OP_HOURGLASS;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSquare);
+}
+
+void CPainterView::OnEditAddshapePicture()
+{
+	m_CurOper = OP_PICTURE;
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSquare);
 }
 

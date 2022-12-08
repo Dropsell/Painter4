@@ -85,7 +85,9 @@ IDB_PATTERN4            BITMAP  DISCARDABLE     "Patterns\\Pattern4.bmp"
 IDB_PATTERN5            BITMAP  DISCARDABLE     "Patterns\\Pattern5.bmp"
 IDB_PATTERN6            BITMAP  DISCARDABLE     "Patterns\\Pattern6.bmp"
 IDB_PATTERN7            BITMAP  DISCARDABLE     "Patterns\\Pattern7.bmp"
-IDB_PATTERN8            BITMAP  DISCARDABLE     "Patterns\\Pattern8.bmp"
+//IDB_PATTERN8            BITMAP  DISCARDABLE     "Patterns\\Pattern8.bmp"
+IDB_PATTERN8            BITMAP  DISCARDABLE     "dirt.bmp"
+IDB_MINECRAFT           BITMAP  DISCARDABLE     "cat.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -108,6 +110,13 @@ BEGIN
     BUTTON      ID_EDIT_ADDSHAPE_SQUARE
     BUTTON      ID_EDIT_ADDSHAPE_POLYGON
     BUTTON      ID_EDIT_ADDSHAPE_SURFACE
+    BUTTON      ID_EDIT_ADDSHAPE_FIVECIRCLES
+    BUTTON      ID_EDIT_ADDSHAPE_THREECIRCLES
+    BUTTON      ID_EDIT_ADDSHAPE_HOURGLASS
+    BUTTON      ID_EDIT_ADDSHAPE_THEBOW
+    BUTTON      ID_EDIT_ADDSHAPE_BEIZETHEBOW
+    BUTTON      ID_EDIT_ADDSHAPE_BEIZEHOURGLASS
+    BUTTON      ID_EDIT_ADDSHAPE_PICTURE
     SEPARATOR
     BUTTON      ID_APP_ABOUT
 END
@@ -155,7 +164,13 @@ BEGIN
 
             MENUITEM "Poly&gon",                    ID_EDIT_ADDSHAPE_POLYGON
             MENUITEM "Sur&face",                    ID_EDIT_ADDSHAPE_SURFACE
-            
+            MENUITEM "Five circles",                ID_EDIT_ADDSHAPE_FIVECIRCLES
+            MENUITEM "Three circles",               ID_EDIT_ADDSHAPE_THREECIRCLES
+            MENUITEM "Hourglass",                   ID_EDIT_ADDSHAPE_HOURGLASS
+            MENUITEM "The bow tie",                 ID_EDIT_ADDSHAPE_THEBOW
+            MENUITEM "Beize line on the bow tie",   ID_EDIT_ADDSHAPE_BEIZETHEBOW
+            MENUITEM "Beize line on hourglass",     ID_EDIT_ADDSHAPE_BEIZEHOURGLASS
+            MENUITEM "Picture",                     ID_EDIT_ADDSHAPE_PICTURE
         END
         POPUP "Change &Order"
         BEGIN

@@ -153,5 +153,11 @@
     <Image Include="Patterns\Pattern8.bmp">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="minecraft_desk.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="dirt.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

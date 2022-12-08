@@ -153,6 +153,9 @@ void CMainFrame::FillPatternsList()
 	bm.LoadBitmap(IDB_PATTERN8);
 	index = m_PatternsList.Add(&bm, RGB(0, 0, 0)); 	bm.DeleteObject();
 
+	//bm.LoadBitmap(IDB_MINECRAFT);
+	//index = m_PatternsList.Add(&bm, RGB(0, 0, 0)); 	bm.DeleteObject();
+
 /*
 		// Загрузка шаблонов заливки из файлов BMP на диске
 		
@@ -212,6 +215,7 @@ void CMainFrame::SetSelectedPattern()
 		case 6: Pattern_ID=IDB_PATTERN6; break;
 		case 7: Pattern_ID=IDB_PATTERN7; break;
 		case 8: Pattern_ID = IDB_PATTERN8; break;
+		case 9: Pattern_ID = IDB_MINECRAFT; break;
 	}
 	
 	// Получили указатель на документ

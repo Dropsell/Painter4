@@ -151,6 +151,8 @@
     <ResourceCompile Include="Painter.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="dirt.bmp" />
+    <Image Include="minecraft_desk.bmp" />
     <Image Include="Patterns\Pattern8.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
