@@ -472,11 +472,12 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		break;
 	case OP_PICTURE:
 		// Создаем объект - квадрат
-		pShape = new CSquare(first_point.x, first_point.y, size * 2);
+		pShape = new CPicture(first_point.x, first_point.y, size * 2);
+		//pShape = new CSquare(first_point.x, first_point.y, size * 2);
 		// Красная линия шириной 1 мм
-		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		pShape->SetPen(RGB(0, 0, 0), 0, PS_GEOMETRIC);
 		// Темно-серая диагональная штриховка
-		pShape->SetBrush(RGB(100, 100, 100), IDB_MINECRAFT, HS_DIAGCROSS);
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
 		break;
 	}
 	if(pShape!=NULL) // создали фигуру

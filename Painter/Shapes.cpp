@@ -522,6 +522,55 @@ void CBeizer::Transform(const CPoint& point0, double ang, int a, int b)
 		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
 };
 
+////////////////////////////////////////
+// Реализация методов класса CSquare
+
+CPicture::CPicture(int x, int y, WORD s) : CBasePoint(x, y, s)
+{
+	m_wSize = s;
+}
+
+CPicture::CPicture() : CBasePoint()
+{
+	m_wSize = 40;
+}
+
+IMPLEMENT_SERIAL(CPicture, CObject, 1)
+void CPicture::Serialize(CArchive& ar)
+{
+	CBasePoint::Serialize(ar);
+}
+void CPicture::Show(CDC* pDC)
+{
+	CString szFilename("cat.bmp");
+	HBITMAP m_hBmp = (HBITMAP)::LoadImage(NULL, szFilename,
+		IMAGE_BITMAP, 512, 512,
+		LR_LOADFROMFILE	| LR_CREATEDIBSECTION);
+	
+	CBitmap bmp;
+	bmp.Attach(m_hBmp);
+
+	CClientDC dc(pDC->GetWindow());
+	CDC bmDC;
+	bmDC.CreateCompatibleDC(&dc);
+	CBitmap* pOldbmp = bmDC.SelectObject(&bmp);
+
+	BITMAP bi;
+	bmp.GetBitmap(&bi);
+
+	CPoint center(x, y);
+	LPtoDP(pDC->GetSafeHdc(), &center, 1);
+	dc.BitBlt(center.x - 512 / 2, center.y - 512 / 2, bi.bmWidth, bi.bmHeight, &bmDC, 0, 0, SRCCOPY);
+
+	bmDC.SelectObject(pOldbmp);
+}
+
+void CPicture::GetRegion(CRgn& Rgn)
+{
+	int s = m_wSize / 2;
+	Rgn.CreateRectRgn(x - s, y - s, x + s, y + s);
+}
+
 
 
 /////////////////////////////////////////////////

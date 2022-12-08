@@ -164,7 +164,7 @@ protected:
 	void Serialize(CArchive& ar);
 public:
 	// Динамический массив точек-вершин
-	CArray <CPoint, CPoint> m_PointsArray;
+	CArray <CPoint, CPoint> m_BasePointsArray;
 	CArray <CPoint, CPoint> m_SplinePointsArray;
 
 	// Конструкторы
@@ -182,6 +182,27 @@ public:
 	// Выполняет преобразование на плоскости
 	void Transform(const CPoint& point0, double ang, int a, int b);
 };
+
+////////////////////////////////////////////////////
+//класс квадрат
+class CPicture : public CBasePoint
+{
+	DECLARE_SERIAL(CPicture)
+protected:
+	// Метод сериализации
+	void Serialize(CArchive& ar);
+public:
+	// Конструкторы
+	CPicture(int x, int y, WORD s);
+	CPicture();
+	~CPicture() {};
+	//Методы
+		// Отображает фигуру на экране
+	void Show(CDC* pDC);
+	// Сообщает область захвата
+	void GetRegion(CRgn& Rgn);
+};
+
 ////////////////////////////////////////////////////
 // 3D точка
 struct POINT3D

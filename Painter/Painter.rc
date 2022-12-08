@@ -85,9 +85,9 @@ IDB_PATTERN4            BITMAP  DISCARDABLE     "Patterns\\Pattern4.bmp"
 IDB_PATTERN5            BITMAP  DISCARDABLE     "Patterns\\Pattern5.bmp"
 IDB_PATTERN6            BITMAP  DISCARDABLE     "Patterns\\Pattern6.bmp"
 IDB_PATTERN7            BITMAP  DISCARDABLE     "Patterns\\Pattern7.bmp"
-//IDB_PATTERN8            BITMAP  DISCARDABLE     "Patterns\\Pattern8.bmp"
-IDB_PATTERN8            BITMAP  DISCARDABLE     "dirt.bmp"
-IDB_MINECRAFT           BITMAP  DISCARDABLE     "cat.bmp"
+IDB_PATTERN8            BITMAP  DISCARDABLE     "creeper.bmp"
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
